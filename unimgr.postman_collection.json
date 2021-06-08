@@ -1,0 +1,308 @@
+{
+	"info": {
+		"_postman_id": "372501a6-d00f-4bed-ba6a-457bef5511c5",
+		"name": "unimgr",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "network-topology",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/restconf/operational/network-topology:network-topology",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"restconf",
+						"operational",
+						"network-topology:network-topology"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "network-topology",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"network-topology:node\": [\n    {\n      \"network-topology:node-id\": \"D1\",    \n      \"network-topology:topology-ext:loopback-address\": \"1.1.1.100\",\n      \"netconf-node-topology:host\" : \"{{xr_host}}\",\n      \"netconf-node-topology:port\" : \"{{xr_netconf_port}}\",\n      \"netconf-node-topology:username\": \"{{xr_username}}\",\n      \"netconf-node-topology:password\": \"{{xr_password}}\",\n      \"netconf-node-topology:tcp-only\" : \"false\",\n      \"netconf-node-topology:keepalive-delay\" : \"0\",\n      \"netconf-node-topology:schema-cache-directory\" : \"D1\"\n      }\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/restconf/config/network-topology:network-topology/topology/topology-netconf/node/D1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"restconf",
+						"config",
+						"network-topology:network-topology",
+						"topology",
+						"topology-netconf",
+						"node",
+						"D1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "network-topology",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/restconf/config/network-topology:network-topology/topology/topology-netconf/node/D1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"restconf",
+						"config",
+						"network-topology:network-topology",
+						"topology",
+						"topology-netconf",
+						"node",
+						"D1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ep-line",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/restconf/config/mef-legato-services:mef-services/carrier-ethernet/subscriber-services/evc/{{evc_id1}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"restconf",
+						"config",
+						"mef-legato-services:mef-services",
+						"carrier-ethernet",
+						"subscriber-services",
+						"evc",
+						"{{evc_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ep-line",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"mef-legato-services:evc\": [\n      {\n        \"mef-legato-services:evc-id\": \"{{evc_id1}}\",\n        \"mef-legato-services:cos-names\": {\n          \"mef-legato-services:cos-name\": [\n            {\n              \"mef-legato-services:name\": \"EPL\"\n            }\n          ]\n        },\n        \"mef-legato-services:end-points\": {\n          \"mef-legato-services:end-point\": [\n            {\n              \"mef-legato-services:uni-id\": \"sip:{{xr_name}}:GigabitEthernet0/0/0/2\",\n              \"mef-legato-services:role\": \"root\",\n              \"mef-legato-services:admin-state\": \"true\",\n              \"mef-legato-services:color-identifier\": \"COLID1\",\n              \"mef-legato-services:cos-identifier\": \"COSID1\",\n              \"mef-legato-services:eec-identifier\": \"EECID1\",\n              \"mef-legato-services:source-mac-address-limit\": \"1\",\n              \"mef-legato-services:source-mac-address-limit-time-interval\": \"1\",\n              \"mef-legato-services:test-meg-enabled\": \"false\",\n              \"mef-legato-services:user-label\": \"admin\",\n              \"mef-legato-services:subscriber-meg-mip-enabled\": \"false\",\n              \"mef-legato-services:ce-vlans\": {\n                \"mef-legato-services:ce-vlan\": [\n                \t\t\"301\"\n            \t]\n              },\n              \"ingress-bwp-per-cos\": {\n                \"mef-legato-services:bwp-flow-per-cos\": [\n                  {\n                    \"mef-legato-services:cos-name\": \"Neon\",\n                    \"envelope-id\": \"Rank 0\",\n                    \"rank\": \"0\"\n                  }\n                ]\n              },\n              \"egress-bwp-per-eec\": {\n                \"mef-legato-services:bwp-flow-per-eec\": [\n                  {\n                    \"mef-legato-services:eec-name\": \"EEC-Krypton\",\n                    \"envelope-id\": \"Rank 0\",\n                    \"rank\": \"0\"\n                  }\n                ]\n              }\n            },\n\t\t\t{\n              \"mef-legato-services:uni-id\": \"sip:{{xr_name}}:GigabitEthernet0/0/0/3\",\n              \"mef-legato-services:role\": \"root\",\n              \"mef-legato-services:admin-state\": \"true\",\n              \"mef-legato-services:color-identifier\": \"COLID1\",\n              \"mef-legato-services:cos-identifier\": \"COSID1\",\n              \"mef-legato-services:eec-identifier\": \"EECID1\",\n              \"mef-legato-services:source-mac-address-limit\": \"1\",\n              \"mef-legato-services:source-mac-address-limit-time-interval\": \"1\",\n              \"mef-legato-services:test-meg-enabled\": \"false\",\n              \"mef-legato-services:user-label\": \"admin\",\n              \"mef-legato-services:subscriber-meg-mip-enabled\": \"false\",\n              \"mef-legato-services:ce-vlans\": {\n                \"mef-legato-services:ce-vlan\": [\n                \t\t\"301\"\n            \t]\n              },\n              \"ingress-bwp-per-cos\": {\n                \"mef-legato-services:bwp-flow-per-cos\": [\n                  {\n                    \"mef-legato-services:cos-name\": \"Neon\",\n                    \"envelope-id\": \"Rank 0\",\n                    \"rank\": \"0\"\n                  }\n                ]\n              },\n              \"egress-bwp-per-eec\": {\n                \"mef-legato-services:bwp-flow-per-eec\": [\n                  {\n                    \"mef-legato-services:eec-name\": \"EEC-Krypton\",\n                    \"envelope-id\": \"Rank 0\",\n                    \"rank\": \"0\"\n                  }\n                ]\n              }\n            }\n          ]\n        },\n        \"mef-legato-services:carrier-ethernet-sls\": {\n          \"mef-legato-services:sls-id\": \"SLSID1\",\n          \"mef-legato-services:start-time\": \"9372-84-27T31:46:58Z\",\n          \"mef-legato-services:cos-entries\": {\n            \"mef-legato-services:cos-entry\": [\n              {\n                \"mef-legato-services:cos-name\": \"Krypton\",\n                \"mef-legato-services:pm-entries\": {\n                  \"mef-legato-services:pm-entry\": [\n                    {\n                      \"mef-legato-services:pm-entry-id\": \"68\",\n                      \"mef-legato-services:sets-of-end-point-pairs\": {\n                        \"mef-legato-services:set-of-end-point-pairs\": [\n                          {\n                            \"mef-legato-services:index\": \"0\",\n                            \"sls-uni-exclusions\": {\n                              \"mef-legato-services:end-point-pair\": [\n                                {\n                                  \"mef-legato-services:end-point1\": \"1\",\n                                  \"mef-legato-services:end-point2\": \"2\"\n                                }\n                              ]\n                            }\n                          }\n                        ]\n                      },\n                      \"mef-legato-services:end-point-pairs\": {\n                        \"sls-uni-exclusions\": {\n                          \"mef-legato-services:end-point-pair\": [\n                            {\n                              \"mef-legato-services:end-point1\": \"1\",\n                              \"mef-legato-services:end-point2\": \"2\"\n                            }\n                          ]\n                        }\n                      }\n                    }\n                  ]\n                }\n              }\n            ]\n          }\n        },\n        \"mef-legato-services:connection-type\": \"point-to-point\",\n        \"mef-legato-services:admin-state\": \"true\",\n        \"mef-legato-services:user-label\": \"U4\",\n        \"mef-legato-services:max-frame-size\": \"1522\",\n        \"mef-legato-services:max-num-of-evc-end-point\": \"2\",\n        \"mef-legato-services:ce-vlan-id-preservation\": \"false\",\n        \"mef-legato-services:ce-vlan-pcp-preservation\": \"false\",\n        \"mef-legato-services:ce-vlan-dei-preservation\": \"false\",\n        \"mef-legato-services:unicast-frame-delivery\": \"unconditional\",\n        \"mef-legato-services:multicast-frame-delivery\": \"unconditional\",\n        \"mef-legato-services:broadcast-frame-delivery\": \"unconditional\",\n        \"mef-legato-services:svc-type\": \"epl\"\n      }\n    ]  \n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/restconf/config/mef-legato-services:mef-services/carrier-ethernet/subscriber-services/evc/{{evc_id1}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"restconf",
+						"config",
+						"mef-legato-services:mef-services",
+						"carrier-ethernet",
+						"subscriber-services",
+						"evc",
+						"{{evc_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ep-line",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/restconf/config/mef-legato-services:mef-services/carrier-ethernet/subscriber-services/evc/{{evc_id1}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"restconf",
+						"config",
+						"mef-legato-services:mef-services",
+						"carrier-ethernet",
+						"subscriber-services",
+						"evc",
+						"{{evc_id1}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
