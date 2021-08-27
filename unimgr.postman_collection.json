@@ -293,7 +293,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/rests/data/network-topology:network-topology/topology=topology-netconf/node={{r2_name}}?content=nonconfig",
+					"raw": "http://{{host}}:{{port}}/rests/data/network-topology:network-topology/topology=topology-netconf/node={{r1_name}}?content=nonconfig",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -304,7 +304,7 @@
 						"data",
 						"network-topology:network-topology",
 						"topology=topology-netconf",
-						"node={{r2_name}}"
+						"node={{r1_name}}"
 					],
 					"query": [
 						{
