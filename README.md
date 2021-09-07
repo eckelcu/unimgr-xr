@@ -4,7 +4,7 @@
 
 A team from Xoriant, Cisco, and Amartus has been working with Ethernet Virtual Connection (EVC) based Ethernet Services based on the Lifecycle Service Orchestration (LSO) architecture defined by MEF Forum (MEF). The implementation of these services has been done within the OpenDaylight UniMgr open source project. These EVC services are offered by service providers to their clients. There are six EVC services standardized by MEF, namely Ethernet Private Line (EPL), Ethernet Virtual Private Line (EVPL), Ethernet Private LAN (EP-LAN), Ethernet Virtual Private LAN (EVP-LAN), Ethernet Private Tree (EP-Tree), and Ethernet Virtual Private Tree (EVP-Tree).
 
-![E-Line service](./image/e-line.jpg)
+![E-Line service](./images/e-line.jpg)
 
 An E-Line is a point-to-point Ethernet service that connects exactly two User Network Interface (UNI) end points. EPL and EVPL services both come under the E-Line service.
 An E-LAN is a multipoint-to-multipoint Ethernet service that connects at least two UNI endpoints, and possibly several UNI endpoints. Each UNI can communicate with any other UNI that is connected to that Ethernet service. EP-LAN and EVP-LAN services both come under the E-LAN service.
