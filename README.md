@@ -28,28 +28,36 @@ Legato is the topmost layer that interfaces with Operations Support Systems (OSS
 
 Currently, the UniMgr project supports devices compliant with Cisco XR (ASR 9000) devices. Cisco and Xorian collaborated to upgrade this support for work with more recently version of IOS XR software. The Xorian team can easily develop drivers for devices of other vendors to enable orchestration of these six services on other devices. 
 
-This repository provides a tutorial that can be used to try the UniMgr project for yourself. The tutorial demonstrates orchestration of these services using two Cisco XR devices running in a Cisco DevNet Sandbox. Postman is used to invoke the Legato API with the necessary parameters to provision the services. This repo includes the Postman [environment](OpenDaylightXR Sandboxes.postman_environment.json) and [collection](./unimgr.postman_collection.json) referenced in the steps that follow. 
+This repository provides a tutorial that can be used to try the UniMgr project for yourself. The tutorial demonstrates orchestration of these services using two Cisco XR devices running in a Cisco DevNet Sandbox. Postman is used to invoke the Legato API with the necessary parameters to provision the services. This repo includes the Postman [environment](unimgr.postman_environment.json) and [collection](./unimgr.postman_collection.json) referenced in the steps that follow. 
 
 ## Create EVC Service using Cisco XR - Step By Step
 
-Prerequisites: For this tutorial, you will need access to a computer on which you can the prerequisite software packages and tools. You will also need access to two Cisco IOS XR devices. 
+###Prerequisites
 
-If you do not have access to two Cisco IOS XR devices, you can use those provided by the CiscoDevNet Sandbox for IOS XR Programmability. If you do not have access to a computer on which you can install software, you can use the Linux host included within the sandbox.
+For this tutorial, you will need access to a computer on which you can the [prerequisite](https://docs.opendaylight.org/en/stable-aluminium/developer-guide/developing-apps-on-the-opendaylight-controller.html#pre-requisites) software packages and tools. You will also need access to two Cisco IOS XR devices. 
+
+If you do not have access to two Cisco IOS XR devices, you can use those provided by the CiscoDevNet [Sandbox](https://devnetsandbox.cisco.com/RM/Diagram/Index/883f8ea6-54a1-453e-98f5-fc175a2a90de?diagramType=Topology_) for IOS XR Programmability. If you do not have access to a computer on which you can install software, you can use the Linux host included within the sandbox.
 
 This sandbox must be reserved prior to use. You can request a reservation for up to a week. It typically takes 10-15 minutes for the sandbox to be ready once it is reserved. Once you receive the email confirming the availability of your sandbox, use the information in that email to establish the VPN required to access your sandbox.
 
-The sandbox provides two Cisco IOS XRv 9000 devices (R1 and R2) connected back to back, plus a Linux host that acts as a development box (devbox). 
+The sandbox provides two Cisco IOS XRv 9000 devices (R1 and R2) connected back to back, plus a Linux host that acts as a development box (devbox).
 
-### Step 1: Clone the “master” branch of “unimgr” project from the OpenDaylight repository.
+![Cisco DevNet Sandbox](./images/sandbox.png)
 
-$ git clone -b master  https://git.opendaylight.org/gerrit/unimgr
+### Step 1: Clone the “master” branch of “unimgr” project from the OpenDaylight repository
 
-### Step 2:  Change to the “unimgr” directory and build the project.
+```
+$ git clone -b master https://git.opendaylight.org/gerrit/unimgr
+```
 
+### Step 2:  Change to the “unimgr” directory and build the project
+
+```
 $ cd unimgr
 $ mvn clean install
+```
 
-### Step 3: After a successful build, start unimgr.
+### Step 3: After a successful build, start unimgr
 
 The unimgr project builds a karaf distribution that has the umimgr component as a deployed
 feature. It is necessary to set a higher than default maximum heap size for the JVM when running
@@ -58,40 +66,54 @@ karaf.
 $ export JAVA_MAX_MEM=2g
 $ ./karaf/target/assembly/bin/karaf
 
+![OpenDaylight startup](./images/karaf.png)
+
 The resulting log file is ./karaf/target/assembly/data/log/karaf.log.
 
  
 
-### Step 4: To enable support for Ethernet Virtual Connection (EVC) services, install the following features via the OpenDaylight console. 
-
+### Step 4: To enable support for Ethernet Virtual Connection (EVC) services, install the following features via the OpenDaylight console
+ 
+```
 opendaylight-user@root>feature:install odl-unimgr-legato-api
 opendaylight-user@root>feature:install odl-unimgr-cisco-xr-driver 
+```
 
 ### Step 5: Verify OpenDaylight is running 
 
-You can verify that OpenDaylight is running on your system with the UniMgr driver for Cisco XR devices installed and the UniMgr Legato API enabled by accessing the network topology API.
+You can verify that OpenDaylight is running on your system with the UniMgr driver for Cisco XR devices installed and the UniMgr Legato API enabled by accessing the network topology API:
 
-http://localhost:8181/rests/data/network-topology?content=nonconfig (username: admin/ password: admin).
+<http://localhost:8181/rests/data/network-topology?content=nonconfig> (username: admin/ password: admin)
 
-### Step 6: Access your Cisco IOS XR devices.
+![Network Topology](./images/network-topology.png)
+
+### Step 6: Access your Cisco IOS XR devices
 
 The remainder of this tutorial assumes you are using the devices in the CiscoDevNet Sandbox for IOS XR Programmability and have established the VPN required to access the devices.
 If you are using your own devices, you will need to update the access information accordingly.
 
 In one terminal, access R1
+
+```
 $ ssh -p 2221 admin@10.10.20.70
 Password: admin
+```
 
 In another terminal, access R2
+```
 $ ssh -p 2231 admin@10.10.20.70
 Password: admin
+```
 
 Show the interfaces and l2vpn configuration prior to configuring anything on the devices.
+
+![Initial Configuration](./images/r1-r2-initial.png)
 
 ### Step 7: Configure network interfaces on XR devices
 
 On R1, configure a loopback interface and enable Gigabit Ethernet 0/0/0/2 as follows:
 
+```
 RP/0/RP0/CPU0:r1#conf t              
 RP/0/RP0/CPU0:r1(config)#interface gigabitEthernet 0/0/0/2   
 RP/0/RP0/CPU0:r1(config-if)#no shutdown 
@@ -100,9 +122,10 @@ RP/0/RP0/CPU0:r1(config)#interface loopback0
 RP/0/RP0/CPU0:r1(config-if)#ipv4 address 100.100.100.100 255.255.255.255
 RP/0/RP0/CPU0:r1(config-if)#commit
 RP/0/RP0/CPU0:r1(config-if)#end          
-
+```
 On R2, configure a loopback interface and enable Gigabit Ethernet 0/0/0/2 as follows:
 
+```
 RP/0/RP0/CPU0:r2#conf t
 RP/0/RP0/CPU0:r2(config)#interface gigabitEthernet 0/0/0/2
 RP/0/RP0/CPU0:r2(config-if)#no shutdown 
@@ -111,20 +134,26 @@ RP/0/RP0/CPU0:r2(config-if)#interface loopback0
 RP/0/RP0/CPU0:r2(config-if)#ipv4 address 200.200.200.200 255.255.255.255
 RP/0/RP0/CPU0:r2(config-if)#commit
 RP/0/RP0/CPU0:r2(config-if)#end
+```
 
 Show the interfaces and l2vpn configuration after completing this configuration on the devices.
 
-Note, you will no longer see anything for GigabitEthernet 0/0/0/2 because its configuration is empty/default. You can verify the status of all the interfaces as follows:
- 
-### Step 8: Connect to R1 and R2 using OpenDaylight’s RESTCONF API, per RFC 8040.
+![Loopback Interface Configuration](./images/r1-r2-loopback.png)
 
-All API calls are available as part of the Postman environment and collection available via GitHub.
+Note, you will no longer see anything for GigabitEthernet 0/0/0/2 because its configuration is empty/default. You can verify the status of all the interfaces as follows:
+
+![show interface brief](./images/show-interface-brief.png)
+
+### Step 8: Connect to R1 and R2 using OpenDaylight’s RESTCONF API, per RFC 8040
+
+All API calls are available as part of the Postman [environment](unimgr.postman_environment.json) and [collection](./unimgr.postman_collection.json).
 
 #### Connect R1
 
 PUT: http://{{host}}:{{port}}/rests/data/network-topology:network-topology/topology=topology-netconf/node={{r1_name}}
 
 Payload: 
+```
 {
   "network-topology:node": [
     {
@@ -140,12 +169,16 @@ Payload:
       }
     ]
 }
+```
+
+![Connect to R1](./images/put-r1.png)
 
 #### Connect R2
 
 PUT: http://{{host}}:{{port}}/rests/data/network-topology:network-topology/topology=topology-netconf/node={{r2_name}}
 
-Payload: 
+Payload:
+``` 
 {
   "network-topology:node": [
     {
@@ -161,20 +194,29 @@ Payload:
       }
     ]
 }
+```
 
-### Step 9: On mounting the devices successfully, each devices capabilities can be observed on network topology API.
+![Connect to R2](./images/put-r2.png)
 
-http://localhost:8181/rests/data/network-topology?content=nonconfig (username: admin/ password: admin).
+### Step 9: On mounting the devices successfully, each devices capabilities can be observed on network topology API
+
+<http://localhost:8181/rests/data/network-topology?content=nonconfig> (username: admin/ password: admin)
+
+![Network Topology](./images/network-topology-r1-r2.png)
 
 This can also be observed using the equivalent API call via Postman. Note, that this, as with all Legato API calls, is an asynchronous operation. The response to the API call reflects the status of the change to the configuration database on OpenDaylight. It may take some time for this configuration to be successfully applied on the network devices to which OpenDaylight is connected. The following Postman request and the corresponding response are shown twice, once immediately after issuing the PUT requests to mount R1 and R2, and again 30 seconds later, after connection to each device and discovery of its capabilities has completed.
 
 GET: http://{{host}}:{{port}}/rests/data/network-topology?content=nonconfig
 
+![Network Topology via Postmand](./images/get-network-topology.png)
+
 The complete list of capabilities is very long and continues well beyond that shown in the screenshot. Unimgr’s cisco-xr-driver explicitly looks for 3 capabilities. If any mounted device doesn’t have these capabilities, the driver will not work appropriately.
  
-•	"capability": "(http://cisco.com/ns/yang/Cisco-IOS-XR-l2vpn-cfg?revision=2017-06-26)Cisco-IOS-XR-l2vpn-cfg"
-•	"capability": "(http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg?revision=2017-09-07)Cisco-IOS-XR-ifmgr-cfg"
-•	"capability": "(http://cisco.com/ns/yang/Cisco-IOS-XR-infra-policymgr-cfg?revision=2017-12-12)Cisco-IOS-XR-infra-policymgr-cfg"
+- "capability": "(http://cisco.com/ns/yang/Cisco-IOS-XR-l2vpn-cfg?revision=2017-06-26)Cisco-IOS-XR-l2vpn-cfg"
+- "capability": "(http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg?revision=2017-09-07)Cisco-IOS-XR-ifmgr-cfg"
+- "capability": "(http://cisco.com/ns/yang/Cisco-IOS-XR-infra-policymgr-cfg?revision=2017-12-12)Cisco-IOS-XR-infra-policymgr-cfg"
+
+![Find l2vpn configuration](./images/find-l2vpn-cfg.png)
 
 ### Step 10:  Create a MEF EP-Line service
 
@@ -183,6 +225,7 @@ Create MEF services between endpoints using the Legato API. The following API ca
 PUT: http://{{host}}:{{port}}/rests/data/mef-legato-services:mef-services/carrier-ethernet/subscriber-services/evc={{evc3_id}}
 
 Payload:
+```
 {
     "mef-legato-services:evc": [
       {
@@ -328,12 +371,17 @@ Payload:
       }
     ]  
 }
+```
+
+![Create EP-Line Service](./images/put-epl.png)
 
 ### Step 11: Verify configuration on R1 and R2
 
 Show the interface and l2vpn configuration of both devices after the creation of the service. Note that Gigabit Ethernet 0/0/0/2 on both devices now have an mtu and l2transport configured and that l2vpn is now configured on both devices as well.
 
+![Verify configuration](./images/verify-cfg.png)
+
 ## Connect with others working on Unimgr
 
-If you have any question or wish to contribute in UniMgr project please reach out to us at unimgr-dev@lists.opendaylight.org .
+If you have any question or wish to contribute in UniMgr project please reach out to us at <mailto:unimgr-dev@lists.opendaylight.org>.
 
