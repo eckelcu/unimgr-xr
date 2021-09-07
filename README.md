@@ -4,22 +4,31 @@
 
 A team from Xoriant, Cisco, and Amartus has been working with Ethernet Virtual Connection (EVC) based Ethernet Services based on the Lifecycle Service Orchestration (LSO) architecture defined by MEF Forum (MEF). The implementation of these services has been done within the OpenDaylight UniMgr open source project. These EVC services are offered by service providers to their clients. There are six EVC services standardized by MEF, namely Ethernet Private Line (EPL), Ethernet Virtual Private Line (EVPL), Ethernet Private LAN (EP-LAN), Ethernet Virtual Private LAN (EVP-LAN), Ethernet Private Tree (EP-Tree), and Ethernet Virtual Private Tree (EVP-Tree).
 
-![E-Line service](./images/e-line.jpg)
+Here is a brief explanation of these services. Please also refer to [MEF 6.3] (https://www.mef.net/resources/mef-6-3-subscriber-ethernet-service-definitions/), [MEF 55.1] (https://www.mef.net/resources/mef-55-1-lifecycle-service-orchestration-lso-reference-architecture-and-framework/), and [MEF 10.4] (https://www.mef.net/resources/mef-10-4-subscriber-ethernet-services-attributes/) for additional information and the formal definition of each service.
 
 An E-Line is a point-to-point Ethernet service that connects exactly two User Network Interface (UNI) end points. EPL and EVPL services both come under the E-Line service.
+
+![E-Line service](./images/e-line.jpg)
+
 An E-LAN is a multipoint-to-multipoint Ethernet service that connects at least two UNI endpoints, and possibly several UNI endpoints. Each UNI can communicate with any other UNI that is connected to that Ethernet service. EP-LAN and EVP-LAN services both come under the E-LAN service.
+
+![E-LAN service](./images/e-lan.jpg)
+
 An E-Tree is a rooted-multipoint ethernet service that connects at least two UNI end points, and possibly many UNI end points. The role of each UNI can be either root or leaf.  A root UNI can communicate with all other root UNIs and all leaf UNIs, whereas a leaf UNI can communicate only with all root UNIs but not with any other leaf UNI. EP-Tree and EVP-Tree services both come under the E-Tree service.
-Please also refer to MEF 6.3, MEF 55.1, and MEF 10.4 for additional information and the formal definition of each service.
- 
+
+![E-Tree service](./images/e-tree.jpg)
+
 Ethernet Private services are port-based services, which means that only one such service can be provisioned on a given UNI. Ethernet Virtual Private services, on the other hand, are VLAN tag-based services, which means that multiple Ethernet Virtual Private services can be provisioned on one single UNI.
 
 The UniMgr project implements these six services as a plugin for [OpenDaylight] (https://www.opendaylight.org/), an open source platform for customizing and automating networks of any size and scale. The services are implemented at the Legato and Presto layers as defined in Lifecycle Service Orchestration (LSO) architecture of MEF.
+
+![LSO Architecture](./images/lso-architecture.png)
 
 Legato is the topmost layer that interfaces with Operations Support Systems (OSS) / Business Support Systems (BSS), whereas Presto is an underlying layer that interacts with devices through respective drivers. The UniMgr project has provided support at Presto for several years. The team from Xorian recently contributed significant code to add support at Legato and provide important updates to Presto and the driver layer as well. This includes some validations at Legato that are over and above the validations specified in the corresponding YANG models. This ensures Legato receives absolutely valid requests and prevents rejection of equivalent API calls by the underlying Presto layer. The Presto layer has the ability to automatically determine an appropriate driver for various UNI hardware so that correct configurations are provisioned on all UNIs participating in the service. Full functionality of Create/Update/Delete/Inquire for all the six services is implemented as part of the UniMgr project. The code supports creating services on UNIs that are part of one device or that span multiple devices. 
 
 Currently, the UniMgr project supports devices compliant with Cisco XR (ASR 9000) devices. Cisco and Xorian collaborated to upgrade this support for work with more recently version of IOS XR software. The Xorian team can easily develop drivers for devices of other vendors to enable orchestration of these six services on other devices. 
 
-This repository provides a tutorial that can be used to try the UniMgr project for yourself. The tutorial demonstrates orchestration of these services using two Cisco XR devices running in a Cisco DevNet Sandbox. Postman scripts are used to invoke the Legato API with the necessary parameters to provision the services.
+This repository provides a tutorial that can be used to try the UniMgr project for yourself. The tutorial demonstrates orchestration of these services using two Cisco XR devices running in a Cisco DevNet Sandbox. Postman is used to invoke the Legato API with the necessary parameters to provision the services. This repo includes the Postman [environment](OpenDaylightXR Sandboxes.postman_environment.json) and [collection](./unimgr.postman_collection.json) referenced in the steps that follow. 
 
 ## Create EVC Service using Cisco XR - Step By Step
 
