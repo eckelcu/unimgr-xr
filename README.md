@@ -383,5 +383,5 @@ Show the interface and l2vpn configuration of both devices after the creation of
 
 ## Connect with others working on Unimgr
 
-If you have any question or wish to contribute in UniMgr project please reach out to us at <mailto:unimgr-dev@lists.opendaylight.org>.
+If you have any question or wish to contribute in UniMgr project please reach out to us at <unimgr-dev@lists.opendaylight.org>.
 
