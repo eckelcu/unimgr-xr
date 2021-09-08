@@ -4,7 +4,7 @@
 
 A team from Xoriant, Cisco, and Amartus has been working with Ethernet Virtual Connection (EVC) based Ethernet Services based on the Lifecycle Service Orchestration (LSO) architecture defined by MEF Forum (MEF). The implementation of these services has been done within the OpenDaylight UniMgr open source project. These EVC services are offered by service providers to their clients. There are six EVC services standardized by MEF, namely Ethernet Private Line (EPL), Ethernet Virtual Private Line (EVPL), Ethernet Private LAN (EP-LAN), Ethernet Virtual Private LAN (EVP-LAN), Ethernet Private Tree (EP-Tree), and Ethernet Virtual Private Tree (EVP-Tree).
 
-Here is a brief explanation of these services. Please also refer to [MEF 6.3] (https://www.mef.net/resources/mef-6-3-subscriber-ethernet-service-definitions/), [MEF 55.1] (https://www.mef.net/resources/mef-55-1-lifecycle-service-orchestration-lso-reference-architecture-and-framework/), and [MEF 10.4] (https://www.mef.net/resources/mef-10-4-subscriber-ethernet-services-attributes/) for additional information and the formal definition of each service.
+Here is a brief explanation of these services. Please also refer to [MEF 6.3](https://www.mef.net/resources/mef-6-3-subscriber-ethernet-service-definitions/), [MEF 55.1](https://www.mef.net/resources/mef-55-1-lifecycle-service-orchestration-lso-reference-architecture-and-framework/), and [MEF 10.4](https://www.mef.net/resources/mef-10-4-subscriber-ethernet-services-attributes/) for additional information and the formal definition of each service.
 
 An E-Line is a point-to-point Ethernet service that connects exactly two User Network Interface (UNI) end points. EPL and EVPL services both come under the E-Line service.
 
@@ -20,7 +20,7 @@ An E-Tree is a rooted-multipoint ethernet service that connects at least two UNI
 
 Ethernet Private services are port-based services, which means that only one such service can be provisioned on a given UNI. Ethernet Virtual Private services, on the other hand, are VLAN tag-based services, which means that multiple Ethernet Virtual Private services can be provisioned on one single UNI.
 
-The UniMgr project implements these six services as a plugin for [OpenDaylight] (https://www.opendaylight.org/), an open source platform for customizing and automating networks of any size and scale. The services are implemented at the Legato and Presto layers as defined in Lifecycle Service Orchestration (LSO) architecture of MEF.
+The UniMgr project implements these six services as a plugin for [OpenDaylight](https://www.opendaylight.org/), an open source platform for customizing and automating networks of any size and scale. The services are implemented at the Legato and Presto layers as defined in Lifecycle Service Orchestration (LSO) architecture of MEF.
 
 ![LSO Architecture](./images/lso-architecture.png)
 
@@ -36,7 +36,7 @@ This repository provides a tutorial that can be used to try the UniMgr project f
 
 For this tutorial, you will need access to a computer on which you can access the [prerequisite](https://docs.opendaylight.org/en/stable-aluminium/developer-guide/developing-apps-on-the-opendaylight-controller.html#pre-requisites) software packages and tools. You will also need access to two Cisco IOS XR devices. 
 
-If you do not have access to two Cisco IOS XR devices, you can use those provided by the CiscoDevNet [Sandbox](https://devnetsandbox.cisco.com/RM/Diagram/Index/883f8ea6-54a1-453e-98f5-fc175a2a90de?diagramType=Topology_) for IOS XR Programmability. If you do not have access to a computer on which you can install software, you can use the Linux host included within the sandbox.
+If you do not have access to two Cisco IOS XR devices, you can use those provided by the CiscoDevNet [Sandbox](https://devnetsandbox.cisco.com/RM/Diagram/Index/883f8ea6-54a1-453e-98f5-fc175a2a90de?diagramType=Topology) for IOS XR Programmability. If you do not have access to a computer on which you can install software, you can use the Linux host included within the sandbox.
 
 This sandbox must be reserved prior to use. You can request a reservation for up to a week. It typically takes 10-15 minutes for the sandbox to be ready once it is reserved. Once you receive the email confirming the availability of your sandbox, use the information in that email to establish the VPN required to access your sandbox.
 
