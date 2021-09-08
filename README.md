@@ -34,7 +34,7 @@ This repository provides a tutorial that can be used to try the UniMgr project f
 
 ### Prerequisites
 
-For this tutorial, you will need access to a computer on which you can the [prerequisite](https://docs.opendaylight.org/en/stable-aluminium/developer-guide/developing-apps-on-the-opendaylight-controller.html#pre-requisites) software packages and tools. You will also need access to two Cisco IOS XR devices. 
+For this tutorial, you will need access to a computer on which you can access the [prerequisite](https://docs.opendaylight.org/en/stable-aluminium/developer-guide/developing-apps-on-the-opendaylight-controller.html#pre-requisites) software packages and tools. You will also need access to two Cisco IOS XR devices. 
 
 If you do not have access to two Cisco IOS XR devices, you can use those provided by the CiscoDevNet [Sandbox](https://devnetsandbox.cisco.com/RM/Diagram/Index/883f8ea6-54a1-453e-98f5-fc175a2a90de?diagramType=Topology_) for IOS XR Programmability. If you do not have access to a computer on which you can install software, you can use the Linux host included within the sandbox.
 
@@ -63,14 +63,15 @@ The unimgr project builds a karaf distribution that has the umimgr component as 
 feature. It is necessary to set a higher than default maximum heap size for the JVM when running
 karaf.
 
+```
 $ export JAVA_MAX_MEM=2g
 $ ./karaf/target/assembly/bin/karaf
+```
 
 ![OpenDaylight startup](./images/karaf.png)
 
 The resulting log file is ./karaf/target/assembly/data/log/karaf.log.
 
- 
 
 ### Step 4: To enable support for Ethernet Virtual Connection (EVC) services, install the following features via the OpenDaylight console
  
@@ -107,6 +108,11 @@ Password: admin
 
 Show the interfaces and l2vpn configuration prior to configuring anything on the devices.
 
+```
+$ show running-configuration interface
+$ show running-configuration l2vpn
+```
+
 ![Initial Configuration](./images/r1-r2-initial.png)
 
 ### Step 7: Configure network interfaces on XR devices
@@ -138,9 +144,18 @@ RP/0/RP0/CPU0:r2(config-if)#end
 
 Show the interfaces and l2vpn configuration after completing this configuration on the devices.
 
+```
+$ show running-configuration interface
+$ show running-configuration l2vpn
+```
+
 ![Loopback Interface Configuration](./images/r1-r2-loopback.png)
 
 Note, you will no longer see anything for GigabitEthernet 0/0/0/2 because its configuration is empty/default. You can verify the status of all the interfaces as follows:
+
+```
+$ show interface brief
+```
 
 ![show interface brief](./images/show-interface-brief.png)
 
@@ -377,7 +392,12 @@ Payload:
 
 ### Step 11: Verify configuration on R1 and R2
 
-Show the interface and l2vpn configuration of both devices after the creation of the service. Note that Gigabit Ethernet 0/0/0/2 on both devices now have an mtu and l2transport configured and that l2vpn is now configured on both devices as well.
+Show the interface and l2vpn configuration of both devices after the creation of the service. Note that Gigabit Ethernet 0/0/0/2 on each device now has an `mtu` and `l2transport` configured and that `l2vpn` is now configured on both devices as well.
+
+```
+$ show running-configuration interface
+$ show running-configuration l2vpn
+```
 
 ![Verify configuration](./images/verify-cfg.png)
 
