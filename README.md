@@ -154,7 +154,7 @@ $ show running-configuration l2vpn
 Note, you will no longer see anything for GigabitEthernet 0/0/0/2 because its configuration is empty/default. You can verify the status of all the interfaces as follows:
 
 ```
-$ show interface brief
+$ show interfaces brief
 ```
 
 ![show interface brief](./images/show-interface-brief.png)
