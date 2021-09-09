@@ -2,7 +2,7 @@
 
 ## Background
 
-A team from Xoriant, Cisco, and Amartus has been working with Ethernet Virtual Connection (EVC) based Ethernet Services based on the Lifecycle Service Orchestration (LSO) architecture defined by MEF Forum (MEF). The implementation of these services has been done within the OpenDaylight UniMgr open source project. These EVC services are offered by service providers to their clients. There are six EVC services standardized by MEF, namely Ethernet Private Line (EPL), Ethernet Virtual Private Line (EVPL), Ethernet Private LAN (EP-LAN), Ethernet Virtual Private LAN (EVP-LAN), Ethernet Private Tree (EP-Tree), and Ethernet Virtual Private Tree (EVP-Tree).
+A team from Xoriant, Cisco, and Amartus has been working with Ethernet Virtual Connection (EVC) based Ethernet Services based on the Lifecycle Service Orchestration (LSO) architecture defined by MEF Forum (MEF). The implementation of these services has been done within the OpenDaylight UniMgr open source project. These EVC services are offered by service providers to their subscribers. There are six EVC services standardized by MEF, namely Ethernet Private Line (EPL), Ethernet Virtual Private Line (EVPL), Ethernet Private LAN (EP-LAN), Ethernet Virtual Private LAN (EVP-LAN), Ethernet Private Tree (EP-Tree), and Ethernet Virtual Private Tree (EVP-Tree).
 
 Here is a brief explanation of these services. Please also refer to [MEF 6.3](https://www.mef.net/resources/mef-6-3-subscriber-ethernet-service-definitions/), [MEF 55.1](https://www.mef.net/resources/mef-55-1-lifecycle-service-orchestration-lso-reference-architecture-and-framework/), and [MEF 10.4](https://www.mef.net/resources/mef-10-4-subscriber-ethernet-services-attributes/) for additional information and the formal definition of each service.
 
@@ -59,9 +59,7 @@ $ mvn clean install
 
 ### Step 3: After a successful build, start unimgr
 
-The unimgr project builds a karaf distribution that has the umimgr component as a deployed
-feature. It is necessary to set a higher than default maximum heap size for the JVM when running
-karaf.
+The UniMgr project builds a Karaf distribution that has the `umimgr` component as a deployed feature. It is necessary to set a higher than default maximum heap size for the JVM when running Karaf.
 
 ```
 $ export JAVA_MAX_MEM=2g
@@ -84,14 +82,13 @@ opendaylight-user@root>feature:install odl-unimgr-cisco-xr-driver
 
 You can verify that OpenDaylight is running on your system with the UniMgr driver for Cisco XR devices installed and the UniMgr Legato API enabled by accessing the network topology API:
 
-<http://localhost:8181/rests/data/network-topology?content=nonconfig> (username: admin/ password: admin)
+<http://localhost:8181/rests/data/network-topology?content=nonconfig> (username: admin / password: admin)
 
 ![Network Topology](./images/network-topology.png)
 
 ### Step 6: Access your Cisco IOS XR devices
 
-The remainder of this tutorial assumes you are using the devices in the CiscoDevNet Sandbox for IOS XR Programmability and have established the VPN required to access the devices.
-If you are using your own devices, you will need to update the access information accordingly.
+The remainder of this tutorial assumes you are using the devices in the CiscoDevNet Sandbox for IOS XR Programmability and have established the VPN required to access the devices. If you are using your own devices, you will need to update the access information accordingly.
 
 In one terminal, access R1
 
@@ -109,57 +106,132 @@ Password: admin
 Show the interfaces and l2vpn configuration prior to configuring anything on the devices.
 
 ```
-$ show running-configuration interface
-$ show running-configuration l2vpn
+#show running-configuration interface
+#show running-configuration l2vpn
 ```
 
 ![Initial Configuration](./images/r1-r2-initial.png)
 
 ### Step 7: Configure network interfaces on XR devices
 
-On R1, configure a loopback interface and enable Gigabit Ethernet 0/0/0/2 as follows:
+The XR devices in the sandbox are connected back-to-back. We want to use these to demonstrate an EPL service offered by a service provider to a subscriber. To achieve this, we define Loopback0 on R1 and R2, use Gigabit Ethernet 0/0/0/0 on R1 and R2 to run OSPF and MPLS, reserve Gigabit Ethernet 0/0/0/1 on R1 and Gigabit Ethernet 0/0/0/2 on R2 to serve as UNIs for the EPL service, and shutdown all other interfaces.
+
+![Interfaces on R1 and R2](./images/r1-r2-interfaces.png)
+
+On R1, configure the interfaces as follows:
 
 ```
-RP/0/RP0/CPU0:r1#conf t              
-RP/0/RP0/CPU0:r1(config)#interface gigabitEthernet 0/0/0/2   
-RP/0/RP0/CPU0:r1(config-if)#no shutdown 
-RP/0/RP0/CPU0:r1(config-if)#commit
+RP/0/RP0/CPU0:r1#conf t 
 RP/0/RP0/CPU0:r1(config)#interface loopback0
 RP/0/RP0/CPU0:r1(config-if)#ipv4 address 100.100.100.100 255.255.255.255
+RP/0/RP0/CPU0:r1(config-if)#exit
+RP/0/RP0/CPU0:r1(config)#interface gigabitEthernet 0/0/0/0
+RP/0/RP0/CPU0:r1(config-if)#ipv4 address 10.20.20.1 255.255.255.0  
+RP/0/RP0/CPU0:r1(config-if)#no shutdown
+RP/0/RP0/CPU0:r1(config-if)#exit
+RP/0/RP0/CPU0:r1(config)#interface gigabitEthernet 0/0/0/1
+RP/0/RP0/CPU0:r1(config-if)#no shutdown
+RP/0/RP0/CPU0:r1(config-if)#exit
+RP/0/RP0/CPU0:r1(config)#interface gigabitEthernet 0/0/0/2
+RP/0/RP0/CPU0:r1(config-if)#shutdown
+RP/0/RP0/CPU0:r1(config-if)#exit
+RP/0/RP0/CPU0:r1(config)#interface gigabitEthernet 0/0/0/3
+RP/0/RP0/CPU0:r1(config-if)#shutdown
+RP/0/RP0/CPU0:r1(config-if)#exit
+RP/0/RP0/CPU0:r1(config)#interface gigabitEthernet 0/0/0/4
+RP/0/RP0/CPU0:r1(config-if)#shutdown
 RP/0/RP0/CPU0:r1(config-if)#commit
-RP/0/RP0/CPU0:r1(config-if)#end          
+RP/0/RP0/CPU0:r1(config-if)#end     
 ```
-On R2, configure a loopback interface and enable Gigabit Ethernet 0/0/0/2 as follows:
+On R2, configure the interfaces as follows:
 
 ```
-RP/0/RP0/CPU0:r2#conf t
-RP/0/RP0/CPU0:r2(config)#interface gigabitEthernet 0/0/0/2
-RP/0/RP0/CPU0:r2(config-if)#no shutdown 
-RP/0/RP0/CPU0:r2(config-if)#commit
-RP/0/RP0/CPU0:r2(config-if)#interface loopback0
+RP/0/RP0/CPU0:r2#conf t 
+RP/0/RP0/CPU0:r2(config)#interface loopback0
 RP/0/RP0/CPU0:r2(config-if)#ipv4 address 200.200.200.200 255.255.255.255
+RP/0/RP0/CPU0:r2(config-if)#exit
+RP/0/RP0/CPU0:r2(config)#interface gigabitEthernet 0/0/0/0
+RP/0/RP0/CPU0:r2(config-if)#ipv4 address 10.20.20.2 255.255.255.0  
+RP/0/RP0/CPU0:r2(config-if)#no shutdown
+RP/0/RP0/CPU0:r2(config-if)#exit
+RP/0/RP0/CPU0:r2(config)#interface gigabitEthernet 0/0/0/1
+RP/0/RP0/CPU0:r2(config-if)#shutdown
+RP/0/RP0/CPU0:r2(config-if)#exit
+RP/0/RP0/CPU0:r2(config)#interface gigabitEthernet 0/0/0/2
+RP/0/RP0/CPU0:r2(config-if)#no shutdown
+RP/0/RP0/CPU0:r2(config-if)#exit
+RP/0/RP0/CPU0:r2(config)#interface gigabitEthernet 0/0/0/3
+RP/0/RP0/CPU0:r2(config-if)#shutdown
+RP/0/RP0/CPU0:r2(config-if)#exit
+RP/0/RP0/CPU0:r2(config)#interface gigabitEthernet 0/0/0/4
+RP/0/RP0/CPU0:r2(config-if)#shutdown
 RP/0/RP0/CPU0:r2(config-if)#commit
 RP/0/RP0/CPU0:r2(config-if)#end
 ```
 
-Show the interfaces and l2vpn configuration after completing this configuration on the devices.
+Verify the interfaces after completing this configuration on R1 and R2.
 
 ```
-$ show running-configuration interface
-$ show running-configuration l2vpn
+#show ip int br
 ```
 
-![Loopback Interface Configuration](./images/r1-r2-loopback.png)
+![Loopback Interface Configuration](./images/r1-interface-config.png)
 
-Note, you will no longer see anything for GigabitEthernet 0/0/0/2 because its configuration is empty/default. You can verify the status of all the interfaces as follows:
+![Loopback Interface Configuration](./images/r2-interface-config.png)
+
+### Step 8: Configure OSPF and MPLS on R1 and R2
+
+On R1, configure OSPF and MPLS as follows:
 
 ```
-$ show interfaces brief
+RP/0/RP0/CPU0:r1#conf t 
+RP/0/RP0/CPU0:r1(config)#router ospf 1
+RP/0/RP0/CPU0:r1(config-ospf)#router-id 100.100.100.100
+RP/0/RP0/CPU0:r1(config-ospf)#area 0
+RP/0/RP0/CPU0:r1(config-ospf-ar)#interface loopback0
+RP/0/RP0/CPU0:r1(config-ospf-ar-if)#exit
+RP/0/RP0/CPU0:r1(config-ospf-ar)#interface gigabitEthernet 0/0/0/0
+RP/0/RP0/CPU0:r1(config-ospf-ar-if)#commit
+RP/0/RP0/CPU0:r1(config-ospf-ar-if)#end
+RP/0/RP0/CPU0:r1#conf t
+RP/0/RP0/CPU0:r1(config)#mpls ldp 
+RP/0/RP0/CPU0:r1(config-ldp)#router-id 100.100.100.100
+RP/0/RP0/CPU0:r1(config-ldp)#interface gigabitEthernet 0/0/0/0
+RP/0/RP0/CPU0:r1(config-ldp-if)#commit
+RP/0/RP0/CPU0:r1(config-ldp-if)#end
 ```
 
-![show interface brief](./images/show-interface-brief.png)
+On R2, configure OSPF and MPLS as follows:
 
-### Step 8: Connect to R1 and R2 using OpenDaylight’s RESTCONF API, per RFC 8040
+```
+RP/0/RP0/CPU0:r2#conf t 
+RP/0/RP0/CPU0:r2(config)#router ospf 1
+RP/0/RP0/CPU0:r2(config-ospf)#router-id 200.200.200.200
+RP/0/RP0/CPU0:r2(config-ospf)#area 0
+RP/0/RP0/CPU0:r2(config-ospf-ar)#interface loopback0
+RP/0/RP0/CPU0:r2(config-ospf-ar-if)#exit
+RP/0/RP0/CPU0:r2(config-ospf-ar)#interface gigabitEthernet 0/0/0/0
+RP/0/RP0/CPU0:r2(config-ospf-ar-if)#commit
+RP/0/RP0/CPU0:r2(config-ospf-ar-if)#end
+RP/0/RP0/CPU0:r2#conf t
+RP/0/RP0/CPU0:r2(config)#mpls ldp 
+RP/0/RP0/CPU0:r2(config-ldp)#router-id 200.200.200.200
+RP/0/RP0/CPU0:r2(config-ldp)#interface gigabitEthernet 0/0/0/0
+RP/0/RP0/CPU0:r2(config-ldp-if)#commit
+RP/0/RP0/CPU0:r2(config-ldp-if)#end
+```
+
+Verify the OSPF and MPLS configuration on R1 and R2.
+
+```
+#show running-configuration router ospf
+#show running-configuration mpls ldp
+```
+
+![OSPF and MPLS Configuration](./images/ospf-mpls.png)
+
+
+### Step 8: Connect to R1 and R2 using OpenDaylight’s RESTCONF API, per [RFC 8040](https://www.rfc-editor.org/info/rfc8040)
 
 All API calls are available as part of the Postman [environment](unimgr.postman_environment.json) and [collection](./unimgr.postman_collection.json).
 
@@ -213,19 +285,21 @@ Payload:
 
 ![Connect to R2](./images/put-r2.png)
 
-### Step 9: On mounting the devices successfully, each devices capabilities can be observed on network topology API
+### Step 10: Check for required capabilities
 
-<http://localhost:8181/rests/data/network-topology?content=nonconfig> (username: admin/ password: admin)
+After mounting the devices successfully, each devices capabilities can be observed via the network topology API.
+
+<http://localhost:8181/rests/data/network-topology?content=nonconfig> (username: admin / password: admin)
 
 ![Network Topology](./images/network-topology-r1-r2.png)
 
-This can also be observed using the equivalent API call via Postman. Note, that this, as with all Legato API calls, is an asynchronous operation. The response to the API call reflects the status of the change to the configuration database on OpenDaylight. It may take some time for this configuration to be successfully applied on the network devices to which OpenDaylight is connected. The following Postman request and the corresponding response are shown twice, once immediately after issuing the PUT requests to mount R1 and R2, and again 30 seconds later, after connection to each device and discovery of its capabilities has completed.
+The capabilities can also be observed using the equivalent API call via Postman. Note, that this, as with all Legato API calls, is an asynchronous operation. The response to the API call reflects the status of the change to the configuration database on OpenDaylight. It may take some time for this configuration to be successfully applied on the network devices to which OpenDaylight is connected. The following Postman request and the corresponding response are shown twice, once immediately after issuing the requests to mount R1 and R2, and again 30 seconds later, after connection to each device and discovery of its capabilities has completed.
 
 GET: http://{{host}}:{{port}}/rests/data/network-topology?content=nonconfig
 
 ![Network Topology via Postmand](./images/get-network-topology.png)
 
-The complete list of capabilities is very long and continues well beyond that shown in the screenshot. Unimgr’s cisco-xr-driver explicitly looks for 3 capabilities. If any mounted device doesn’t have these capabilities, the driver will not work appropriately.
+The complete list of capabilities is very long and continues well beyond that shown in the screenshot. UniMgr’s cisco-xr-driver explicitly looks for 3 capabilities. If any mounted device doesn’t have these capabilities, the driver will not work appropriately.
  
 - "capability": "(http://cisco.com/ns/yang/Cisco-IOS-XR-l2vpn-cfg?revision=2017-06-26)Cisco-IOS-XR-l2vpn-cfg"
 - "capability": "(http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg?revision=2017-09-07)Cisco-IOS-XR-ifmgr-cfg"
@@ -233,15 +307,15 @@ The complete list of capabilities is very long and continues well beyond that sh
 
 ![Find l2vpn configuration](./images/find-l2vpn-cfg.png)
 
-### Step 10:  Create a MEF EP-Line service
+### Step 11:  Create a MEF EPL service
 
-Create MEF services between endpoints using the Legato API. The following API call creates an EP-Line service between R1 and R2. Gigabit Ethernet 0/0/0/2 is used on both devices.
+MEF services can be created between endpoints using the Legato API. The following API call creates an EPL service between R1 and R2. Gigabit Ethernet 0/0/0/1 is used on R1, and Gigabit Ethernet 0/0/0/2 is used on R2.
 
 PUT: http://{{host}}:{{port}}/rests/data/mef-legato-services:mef-services/carrier-ethernet/subscriber-services/evc={{evc3_id}}
 
 Payload:
 ```
-{
+
     "mef-legato-services:evc": [
       {
         "mef-legato-services:evc-id": "{{evc3_id}}",
@@ -255,7 +329,7 @@ Payload:
         "mef-legato-services:end-points": {
           "mef-legato-services:end-point": [
             {
-              "mef-legato-services:uni-id": "sip:{{r1_name}}:GigabitEthernet0/0/0/2",
+              "mef-legato-services:uni-id": "sip:{{r1_name}}:GigabitEthernet0/0/0/1",
               "mef-legato-services:role": "root",
               "mef-legato-services:admin-state": "true",
               "mef-legato-services:color-identifier": "COLID1",
@@ -390,9 +464,9 @@ Payload:
 
 ![Create EP-Line Service](./images/put-epl.png)
 
-### Step 11: Verify configuration on R1 and R2
+### Step 12: Verify configuration on R1 and R2
 
-Show the interface and l2vpn configuration of both devices after the creation of the service. Note that Gigabit Ethernet 0/0/0/2 on each device now has an `mtu` and `l2transport` configured and that `l2vpn` is now configured on both devices as well.
+Show the interface and l2vpn configuration of both devices after the creation of the service. Note that Gigabit Ethernet 0/0/0/1 on R1 and Gigabit Ethernet 0/0/0/2 on R2 have an `mtu` and `l2transport` configured and that `l2vpn` is now configured on both devices as well.
 
 ```
 $ show running-configuration interface
@@ -401,7 +475,29 @@ $ show running-configuration l2vpn
 
 ![Verify configuration](./images/verify-cfg.png)
 
-## Connect with others working on Unimgr
+### Step 13: Verify the EPL service is up and traffic flows across it
 
-If you have any question or wish to contribute in UniMgr project please reach out to us at <unimgr-dev@lists.opendaylight.org>.
+Verify the status of the L2VPN configured for the EPL service, and ping the corresponding pseudowire to verify traffic across the EPL.
 
+On R1
+
+```
+#show l2vpn xconnect
+#ping mpls pseudowire 200.200.200.200 2004
+```
+
+![R1 ping via EPL](./images/r1-ping.png)
+
+
+On R2
+
+```
+#show l2vpn xconnect
+#ping mpls pseudowire 100.100.100.100 2004
+```
+
+![R2 ping via EPL](./images/r2-ping.png)
+
+## Connect with others working on UniMgr
+
+If you have any question or wish to contribute in UniMgr project, please reach out to us at <unimgr-dev@lists.opendaylight.org>.
