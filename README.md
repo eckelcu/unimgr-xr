@@ -231,7 +231,7 @@ Verify the OSPF and MPLS configuration on R1 and R2.
 ![OSPF and MPLS Configuration](./images/ospf-mpls.png)
 
 
-### Step 8: Connect to R1 and R2 using OpenDaylight’s RESTCONF API, per [RFC 8040](https://www.rfc-editor.org/info/rfc8040)
+### Step 9: Connect to R1 and R2 using OpenDaylight’s RESTCONF API, per [RFC 8040](https://www.rfc-editor.org/info/rfc8040)
 
 All API calls are available as part of the Postman [environment](unimgr.postman_environment.json) and [collection](./unimgr.postman_collection.json).
 
@@ -287,19 +287,19 @@ Payload:
 
 ### Step 10: Check for required capabilities
 
-After mounting the devices successfully, each devices capabilities can be observed via the network topology API.
+After mounting the devices successfully, the capabilities of each device can be observed using the API.
 
 <http://localhost:8181/rests/data/network-topology?content=nonconfig> (username: admin / password: admin)
 
 ![Network Topology](./images/network-topology-r1-r2.png)
 
-The capabilities can also be observed using the equivalent API call via Postman. Note, that this, as with all Legato API calls, is an asynchronous operation. The response to the API call reflects the status of the change to the configuration database on OpenDaylight. It may take some time for this configuration to be successfully applied on the network devices to which OpenDaylight is connected. The following Postman request and the corresponding response are shown twice, once immediately after issuing the requests to mount R1 and R2, and again 30 seconds later, after connection to each device and discovery of its capabilities has completed.
+The capabilities can also be observed using the equivalent API call via Postman. Note that connecting to a device, as done in the previous step, is an asynchronous operation. The response to the API call reflects the status of the change to the configuration database on OpenDaylight. It may take some time for this configuration to be successfully applied on the network devices to which OpenDaylight is connected. The following Postman request and the corresponding response are shown twice, once immediately after issuing the requests to mount R1 and R2, and again 30 seconds later, after connection to each device and the discovery of its capabilities has completed.
 
 GET: http://{{host}}:{{port}}/rests/data/network-topology?content=nonconfig
 
 ![Network Topology via Postmand](./images/get-network-topology.png)
 
-The complete list of capabilities is very long and continues well beyond that shown in the screenshot. UniMgr’s cisco-xr-driver explicitly looks for 3 capabilities. If any mounted device doesn’t have these capabilities, the driver will not work appropriately.
+The complete list of capabilities is very long and continues well beyond that shown in the screenshot. UniMgr’s cisco-xr-driver explicitly looks for 3 capabilities. If any mounted device does not have these capabilities, the driver will not work appropriately.
  
 - "capability": "(http://cisco.com/ns/yang/Cisco-IOS-XR-l2vpn-cfg?revision=2017-06-26)Cisco-IOS-XR-l2vpn-cfg"
 - "capability": "(http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg?revision=2017-09-07)Cisco-IOS-XR-ifmgr-cfg"
@@ -309,7 +309,7 @@ The complete list of capabilities is very long and continues well beyond that sh
 
 ### Step 11:  Create a MEF EPL service
 
-MEF services can be created between endpoints using the Legato API. The following API call creates an EPL service between R1 and R2. Gigabit Ethernet 0/0/0/1 is used on R1, and Gigabit Ethernet 0/0/0/2 is used on R2.
+The following API call creates an EPL service between R1 and R2. Gigabit Ethernet 0/0/0/1 is used on R1, and Gigabit Ethernet 0/0/0/2 is used on R2.
 
 PUT: http://{{host}}:{{port}}/rests/data/mef-legato-services:mef-services/carrier-ethernet/subscriber-services/evc={{evc3_id}}
 
@@ -479,7 +479,7 @@ $ show running-configuration l2vpn
 
 Verify the status of the L2VPN configured for the EPL service, and ping the corresponding pseudowire to verify traffic across the EPL.
 
-On R1
+#### On R1
 
 ```
 #show l2vpn xconnect
@@ -489,7 +489,7 @@ On R1
 ![R1 ping via EPL](./images/r1-ping.png)
 
 
-On R2
+#### On R2
 
 ```
 #show l2vpn xconnect
