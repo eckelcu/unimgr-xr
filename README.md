@@ -40,7 +40,7 @@ If you do not have access to two Cisco IOS XR devices, you can use those provide
 
 This sandbox must be reserved prior to use. You can request a reservation for up to a week. It typically takes 10-15 minutes for the sandbox to be ready once it is reserved. Once you receive the email confirming the availability of your sandbox, use the information in that email to establish the VPN required to access your sandbox.
 
-The sandbox provides two Cisco IOS XRv 9000 devices (R1 and R2) connected back to back, plus a Linux host that acts as a development box (devbox).
+The sandbox provides two Cisco IOS XRv 9000 devices (R1 and R2) and a Linux host that acts as a development box (devbox).
 
 ![Cisco DevNet Sandbox](./images/sandbox.png)
 
