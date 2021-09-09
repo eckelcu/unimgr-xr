@@ -297,7 +297,7 @@ The capabilities can also be observed using the equivalent API call via Postman.
 
 GET: http://{{host}}:{{port}}/rests/data/network-topology?content=nonconfig
 
-![Network Topology via Postmand](./images/get-network-topology.png)
+![Network Topology via Postman](./images/get-network-topology.png)
 
 The complete list of capabilities is very long and continues well beyond that shown in the screenshot. UniMgr’s cisco-xr-driver explicitly looks for 3 capabilities. If any mounted device does not have these capabilities, the driver will not work appropriately.
  
