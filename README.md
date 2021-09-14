@@ -194,7 +194,8 @@ RP/0/RP0/CPU0:r1(config-ospf-ar)#interface gigabitEthernet 0/0/0/0
 RP/0/RP0/CPU0:r1(config-ospf-ar-if)#commit
 RP/0/RP0/CPU0:r1(config-ospf-ar-if)#end
 RP/0/RP0/CPU0:r1#conf t
-RP/0/RP0/CPU0:r1(config)#mpls ldp 
+RP/0/RP0/CPU0:r1(config)#mpls oam
+RP/0/RP0/CPU0:r1(config-oam)#mpls ldp 
 RP/0/RP0/CPU0:r1(config-ldp)#router-id 100.100.100.100
 RP/0/RP0/CPU0:r1(config-ldp)#interface gigabitEthernet 0/0/0/0
 RP/0/RP0/CPU0:r1(config-ldp-if)#commit
@@ -214,7 +215,8 @@ RP/0/RP0/CPU0:r2(config-ospf-ar)#interface gigabitEthernet 0/0/0/0
 RP/0/RP0/CPU0:r2(config-ospf-ar-if)#commit
 RP/0/RP0/CPU0:r2(config-ospf-ar-if)#end
 RP/0/RP0/CPU0:r2#conf t
-RP/0/RP0/CPU0:r2(config)#mpls ldp 
+RP/0/RP0/CPU0:r2(config)#mpls oam
+RP/0/RP0/CPU0:r2(config-oam)#mpls ldp 
 RP/0/RP0/CPU0:r2(config-ldp)#router-id 200.200.200.200
 RP/0/RP0/CPU0:r2(config-ldp)#interface gigabitEthernet 0/0/0/0
 RP/0/RP0/CPU0:r2(config-ldp-if)#commit
