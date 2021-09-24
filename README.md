@@ -106,8 +106,8 @@ Password: admin
 Show the interfaces and l2vpn configuration prior to configuring anything on the devices.
 
 ```
-#show running-configuration interface
-#show running-configuration l2vpn
+#show running-config interface
+#show running-config l2vpn
 ```
 
 ![Initial Configuration](./images/r1-r2-initial.png)
@@ -226,8 +226,8 @@ RP/0/RP0/CPU0:r2(config-ldp-if)#end
 Verify the OSPF and MPLS configuration on R1 and R2.
 
 ```
-#show running-configuration router ospf
-#show running-configuration mpls ldp
+#show running-config router ospf
+#show running-config mpls ldp
 ```
 
 ![OSPF and MPLS Configuration](./images/ospf-mpls.png)
@@ -471,8 +471,8 @@ Payload:
 Show the interface and l2vpn configuration of both devices after the creation of the service. Note that Gigabit Ethernet 0/0/0/1 on R1 and Gigabit Ethernet 0/0/0/2 on R2 have an `mtu` and `l2transport` configured and that `l2vpn` is now configured on both devices as well.
 
 ```
-$ show running-configuration interface
-$ show running-configuration l2vpn
+$ show running-config interface
+$ show running-config l2vpn
 ```
 
 ![Verify configuration](./images/verify-cfg.png)
