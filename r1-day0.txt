@@ -1,0 +1,37 @@
+conf t 
+interface loopback0
+ipv4 address 100.100.100.100 255.255.255.255
+exit
+interface gigabitEthernet 0/0/0/0
+ipv4 address 10.20.20.1 255.255.255.0  
+no shutdown
+exit
+interface gigabitEthernet 0/0/0/1
+no shutdown
+exit
+interface gigabitEthernet 0/0/0/2
+shutdown
+exit
+interface gigabitEthernet 0/0/0/3
+shutdown
+exit
+interface gigabitEthernet 0/0/0/4
+shutdown
+commit
+end
+conf t
+router ospf 1
+router-id 100.100.100.100
+area 0
+interface loopback0
+exit
+interface gigabitEthernet 0/0/0/0
+commit
+end
+conf t
+mpls oam
+mpls ldp
+router-id 100.100.100.100
+interface gigabitEthernet 0/0/0/0
+commit
+end
